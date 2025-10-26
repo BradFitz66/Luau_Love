@@ -29,4 +29,6 @@ $ cmake --build build --target love/love --config Release
 # Current issues
 * drawCallbackInner function inside wrap_Event.cpp seems to push a nil function onto the stack and then call it, causing a error when the user clicks the titlebar of the window. It has been commented out until a solution is found.
 * No FFI functionality, any Love2D libraries using FFI will not work
+* math.random error regarding argument 2, seems to be caused when number is too large, potentially the same as this: https://stackoverflow.com/questions/20171224/interval-is-empty-lua-math-random-isnt-working-for-large-numbers
+* Sometimes when first loading (no matter if with a game or not), it will crash for seemingly no reason (no error). Will most likely have to look at this in a debugger
 * Probably a ton of issues that have yet to be discovered
