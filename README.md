@@ -13,7 +13,7 @@ This project uses Luau which is licensed under MIT. You can find Luau [here](htt
 Building is provided as-is without any further support. The building instructions are essentially the same as the standard megasource (linux and macos untested):
 
 ```
-$ git clone https://github.com/love2d/megasource megasource
+$ git clone https://github.com/BradFitz66/Luau_Love megasource
 $ cd megasource
 $ cmake -G "Visual Studio 17 2022" -A x64 -S . -B build
 $ cmake --build build --target megatest --config Release
