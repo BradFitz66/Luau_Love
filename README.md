@@ -1,6 +1,8 @@
 # Luau_Love
 A very hacky and ugly attempt to replace PUC Lua/LuaJIT with Luau in Love2D
 
+# Status
+Runs with a small amount of issues (detailed below). Can run Lua51 code (assuming they don't use FFI or other LuaJIT specific features)  as-well as Luau code with Luau specific features such as type annotations and the SIMD vector object
 
 # License
 
