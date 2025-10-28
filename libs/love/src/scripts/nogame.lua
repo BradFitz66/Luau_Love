@@ -22,18 +22,24 @@ freely, subject to the following restrictions:
 -- Make sure love exists.
 local love = require("love")
 
-function love.nogame()
-	print("No game begin")
+--[[
+	ToDo: Make this a prettier no-game screen demo.
+]]
 
+function love.nogame()
 	function love.load()
-		print("This is called from love.load!")
 	end
 
 	function love.update(dt)
 	end
 
 	function love.draw()
-		love.graphics.print("No game found!", 400, 300)
+		love.graphics.clear(0.2, 0.2, 0.2)
+		love.graphics.setColor(1, 1, 1)
+		love.graphics.printf("No game loaded.\n\nPlease load a game to play.", 0, love.graphics.getHeight() / 2 - 24, love.graphics.getWidth(), "center")
+	end
+
+	function love.keypressed(key)
 	end
 end
 

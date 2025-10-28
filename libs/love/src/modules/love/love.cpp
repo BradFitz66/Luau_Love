@@ -522,6 +522,27 @@ static void luax_addcompatibilityalias(lua_State *L, const char *module, const c
 	lua_pop(L, 1);
 }
 
+
+//Reimplement the functionality of loadstring ie: loadstring("print('hello world')")()
+
+static int w__loadstring(lua_State *L)
+{
+    size_t l = 0;
+    const char* s = luaL_checklstring(L, 1, &l);
+    const char* chunkname = luaL_optstring(L, 2, s);
+
+    lua_setsafeenv(L, LUA_ENVIRONINDEX, false);
+
+    std::string bytecode = luau_compile(s, l, nullptr, nullptr);
+    if (luau_load(L, chunkname, bytecode.data(), bytecode.size(), 0) == 0)
+        return 1;
+
+    lua_pushnil(L);
+    lua_insert(L, -2); // put before error message
+    return 2;          // return nil plus error message
+}
+
+
 int luaopen_love(lua_State *L)
 {
 	// Preload module loaders.
@@ -596,6 +617,10 @@ int luaopen_love(lua_State *L)
 	lua_pushcfunction(L, w_love_getVersion,"");
 	lua_setfield(L, -2, "getVersion");
 
+	printf("Pushing loadstring\n");
+	lua_pushcfunction(L, w__loadstring);
+	lua_setfield(L, -2, "loadstring");
+
 	lua_pushcfunction(L, w_love_isVersionCompatible,"");
 	lua_setfield(L, -2, "isVersionCompatible");
 
@@ -628,6 +653,15 @@ int luaopen_love(lua_State *L)
 
 		lua_pushcfunction(L, w_love_hasDeprecationOutput,"");
 		lua_setfield(L, -2, "hasDeprecationOutput");
+
+		static const luaL_Reg funcs[] = {
+			{"loadstring_test", w__loadstring},
+			{NULL, NULL},
+		};
+		lua_pushvalue(L, LUA_GLOBALSINDEX);
+		luaL_register(L, NULL, funcs);
+		lua_pop(L, 1);
+
 	}
 
 	// Necessary for Data-creating methods to work properly in Data subclasses.

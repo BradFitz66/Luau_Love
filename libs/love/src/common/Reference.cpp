@@ -70,7 +70,6 @@ void Reference::unref()
 
 void Reference::push(lua_State *L)
 {
-	printf(idx == LUA_REFNIL ? "Pushing nil reference\n" : "Pushing valid reference\n");
 	if (idx != LUA_REFNIL)
 	{
 		luax_insist(L, LUA_REGISTRYINDEX, REFERENCE_TABLE_NAME);

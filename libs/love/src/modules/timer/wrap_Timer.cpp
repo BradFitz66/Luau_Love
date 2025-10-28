@@ -95,7 +95,6 @@ extern "C" int luaopen_love_timer(lua_State *L)
 	w.type = &Module::type;
 	w.functions = functions;
 	w.types = 0;
-
 	return luax_register_module(L, w);
 }
 

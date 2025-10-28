@@ -738,8 +738,10 @@ lua_CFunction (lua_atpanic) (lua_State *L, lua_CFunction panicf);
 
 int luaX_error(lua_State *L, const char *fmt, ...);
 int luaX_argerror(lua_State *L, int narg, const char *msg);
-int luaX_loadstring (lua_State *L, const char *s);
+int luaX_loadstring (lua_State *L);
 void luaX_setfuncs (lua_State *L, const luaL_Reg *l, int nup);
+
+int luaX_load_aux (lua_State *L, int status);
 /**
  * Compatibility shim for lua_resume
  * Exported because it's used in the launcher

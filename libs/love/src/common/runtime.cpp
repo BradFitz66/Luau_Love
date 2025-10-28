@@ -1196,12 +1196,24 @@ int luaX_argerror(lua_State *L, int narg, const char *msg){
 	return 0;
 }
 
-int luaX_loadstring (lua_State *L, const char *s) {
-  return luax_loadbufferx(L, s, strlen(s), s);
+int luaX_loadstring (lua_State *L) {
+	size_t len;
+	const char *s = luaL_checklstring(L, 1, &len);
+	return luax_loadbufferx(L, s, len, s);
 }
 
 void luaX_setfuncs (lua_State *L, const luaL_Reg *l, int nup){
 	luax_setfuncs(L, l);
+}
+
+static int luaX_load_aux (lua_State *L, int status) {
+	if (status == LUA_OK)
+		return 1;
+	else {
+		lua_pushnil(L);
+		lua_insert(L, -2);
+		return 2;
+	}
 }
 
 } // love
