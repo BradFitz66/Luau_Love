@@ -136,6 +136,13 @@ if(MEGA)
 	target_link_libraries(Luau.VM INTERFACE ${MEGA_LUAU})
 	target_link_libraries(Luau.Compiler INTERFACE ${MEGA_LUAU})
 	target_link_libraries(Luau.Ast INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.CodeGen INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.Analysis INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.CLI.lib INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.Config INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.EqSat INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.Require INTERFACE ${MEGA_LUAU})
+	target_link_libraries(Luau.RequireNavigator INTERFACE ${MEGA_LUAU})
 
 else()
 	if(MSVC OR ANDROID)
@@ -254,7 +261,7 @@ add_library(love_common STATIC
 	src/common/version.h
 )
 target_link_libraries(love_common PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen
 	lovedep::SDL
 )
 
@@ -306,7 +313,7 @@ add_library(love_audio_root STATIC
 	src/modules/audio/wrap_RecordingDevice.h
 )
 target_link_libraries(love_audio_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis	
 	lovedep::OpenAL
 )
 
@@ -376,7 +383,7 @@ add_library(love_data STATIC
 	src/modules/data/wrap_DataView.h
 )
 target_link_libraries(love_data PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::Zlib
 )
 
@@ -392,7 +399,7 @@ add_library(love_event_root STATIC
 	src/modules/event/wrap_Event.lua
 )
 target_link_libraries(love_event_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -433,7 +440,7 @@ add_library(love_filesystem_root STATIC
 	src/modules/filesystem/wrap_NativeFile.h
 )
 target_link_libraries(love_filesystem_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -486,7 +493,7 @@ add_library(love_font_root STATIC
 	src/modules/font/wrap_Rasterizer.h
 )
 target_link_libraries(love_font_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::Freetype
 )
 
@@ -583,7 +590,7 @@ add_library(love_graphics_root STATIC
 	src/modules/graphics/wrap_Video.lua
 )
 target_link_libraries(love_graphics_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_graphics_opengl STATIC
@@ -697,7 +704,7 @@ add_library(love_image_root STATIC
 	src/modules/image/wrap_ImageData.lua
 )
 target_link_libraries(love_image_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_image_magpie STATIC
@@ -742,7 +749,7 @@ add_library(love_joystick_root STATIC
 	src/modules/joystick/wrap_JoystickModule.h
 )
 target_link_libraries(love_joystick_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_joystick_sdl STATIC
@@ -772,7 +779,7 @@ add_library(love_keyboard_root STATIC
 	src/modules/keyboard/wrap_Keyboard.h
 )
 target_link_libraries(love_keyboard_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -815,7 +822,7 @@ add_library(love_math STATIC
 	src/modules/math/wrap_Transform.h
 )
 target_link_libraries(love_math PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 #
@@ -832,7 +839,7 @@ add_library(love_mouse_root STATIC
 	src/modules/mouse/wrap_Mouse.h
 )
 target_link_libraries(love_mouse_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -952,7 +959,7 @@ add_library(love_physics_box2d STATIC
 	src/modules/physics/box2d/wrap_World.h
 )
 target_link_libraries(love_physics_box2d PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_physics INTERFACE)
@@ -972,7 +979,7 @@ add_library(love_sensor_root STATIC
 	src/modules/sensor/wrap_Sensor.h
 )
 target_link_libraries(love_sensor_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -1010,7 +1017,7 @@ add_library(love_sound_root STATIC
 	src/modules/sound/wrap_SoundData.lua
 )
 target_link_libraries(love_sound_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_sound_lullaby STATIC
@@ -1050,7 +1057,7 @@ add_library(love_system_root STATIC
 	src/modules/system/wrap_System.h
 )
 target_link_libraries(love_system_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -1090,7 +1097,7 @@ add_library(love_thread_root STATIC
 	src/modules/thread/wrap_ThreadModule.h
 )
 target_link_libraries(love_thread_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 add_library(love_thread_sdl STATIC
@@ -1120,7 +1127,7 @@ add_library(love_timer STATIC
 	src/modules/timer/wrap_Timer.h
 )
 target_link_libraries(love_timer PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 )
 
 #
@@ -1134,7 +1141,7 @@ add_library(love_touch_root STATIC
 	src/modules/touch/wrap_Touch.h
 )
 target_link_libraries(love_touch_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -1165,7 +1172,7 @@ add_library(love_video_root STATIC
 	src/modules/video/wrap_VideoStream.h
 )
 target_link_libraries(love_video_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::Theora
 	lovedep::Ogg
 )
@@ -1200,7 +1207,7 @@ add_library(love_window_root STATIC
 	src/modules/window/wrap_Window.h
 )
 target_link_libraries(love_window_root PUBLIC
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	lovedep::SDL
 )
 
@@ -1339,7 +1346,7 @@ add_library(love_3p_enet
 	src/libraries/enet/libenet/include/enet/win32.h
 )
 love_disable_warnings(love_3p_enet)
-target_link_libraries(love_3p_enet Luau.VM Luau.Compiler Luau.Ast)
+target_link_libraries(love_3p_enet Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis)
 target_include_directories(love_3p_enet PUBLIC src/libraries/enet/libenet/include)
 if(MINGW)
 	target_link_libraries(love_3p_enet winmm.a)
@@ -1490,7 +1497,7 @@ add_library(love_3p_lua53
 	src/libraries/lua53/lutf8lib.c
 	src/libraries/lua53/lutf8lib.h
 )
-target_link_libraries(love_3p_lua53 Luau.VM Luau.Compiler Luau.Ast)
+target_link_libraries(love_3p_lua53 Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis)
 
 
 #
@@ -1764,8 +1771,9 @@ set(LIBLOVE_DEPENDENCIES
 	love_window
 )
 set(LIBLOVE_LIBRARIES
-	Luau.VM Luau.Compiler Luau.Ast
+	Luau.VM Luau.Compiler Luau.Ast Luau.CodeGen Luau.Analysis
 	love_3p_box2d
+	
 	love_3p_ddsparse
 	love_3p_glad
 	love_3p_glslang

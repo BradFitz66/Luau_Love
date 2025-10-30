@@ -285,17 +285,23 @@ set(LUAU_BUILD_TESTS OFF CACHE BOOL "")
 set(LUAU_BUILD_CLI OFF CACHE BOOL "")
 set(LUAU_EXTERN_C ON CACHE BOOL "")
 add_subdirectory("libs/${MEGA_LUAU_DIR}" ${CMAKE_BINARY_DIR}/luau)
-foreach(target Luau.VM Luau.Compiler)
+foreach(target Luau.VM Luau.Compiler )
 	get_target_property(defs ${target} INTERFACE_COMPILE_DEFINITIONS)
 	list(FILTER defs EXCLUDE REGEX [[LUA.*_API]])
 	set_target_properties(${target} PROPERTIES INTERFACE_COMPILE_DEFINITIONS "${defs}")
 endforeach()
-set_target_properties(
-	Luau.Require
-	Luau.RequireNavigator
-	PROPERTIES EXCLUDE_FROM_ALL 1
+set(MEGA_LUAU 
+	Luau.VM 
+	Luau.Compiler 
+	Luau.Ast      
+	Luau.CodeGen     
+	Luau.Analysis
+    Luau.CLI.lib
+    Luau.Config
+    Luau.EqSat
+    Luau.Require
+    Luau.RequireNavigator
 )
-set(MEGA_LUAU Luau.VM Luau.Compiler Luau.Ast)
 set_target_properties(${MEGA_LUAU} PROPERTIES POSITION_INDEPENDENT_CODE 1)
 
 if(WIN32 AND MEGA_ARM64)

@@ -30,13 +30,13 @@
 
 #include <SDL3/SDL_main.h>
 
+
 // Lua
 extern "C" {
 	#include <lua.h>
 	#include <lualib.h>
 	#include <luacode.h>
 }
-
 #ifdef LOVE_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -168,7 +168,7 @@ static void print_usage()
 
 static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &restartvalue)
 {
-	const char *err = nullptr;
+	const char* err= nullptr;
 	love_openConsole(err);
 	if (argc > 1 && strcmp(argv[1], "--version") == 0)
 	{
@@ -183,10 +183,21 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 		retval = 0;
 		return DONE_QUIT;
 	}
+
+	//ToDo: figure out why using these functions causes linker errors.
+
+	//bool codeGenSupported = Luau::CodeGen::isSupported();
 	// Create the virtual machine.
 	lua_State *L = luaL_newstate();
 	luaL_openlibs(L);
-
+	// if (!codeGenSupported)
+	// {
+	// 	printf("Warning: Luau code generation is not supported on this platform. Performance may be degraded.\n");
+	// }
+	// else
+	// {
+	// 	Luau::CodeGen::create(L);
+	// }
 	// LuaJIT-specific setup needs to be done as early as possible - before
 	// get_app_arguments because that loads external library code. This is also
 	// loaded inside love's Lua threads. Note that it doesn't use the love table.
@@ -227,7 +238,6 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 
 		lua_setglobal(L, "arg");
 	}
-
 	// require "love"
 	lua_getglobal(L, "require");
 	lua_pushstring(L, "love");
@@ -247,10 +257,10 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 	// Pop the love table returned by require "love".
 	lua_pop(L, 1);
 
-	//luaopen_love_boot(L);
 
 	lua_getglobal(L, "require");
 	lua_pushstring(L, "love.boot");
+	// luau_codegen_compile(L, -1);
 	lua_call(L, 1, 1);
 
 	lua_newthread(L);

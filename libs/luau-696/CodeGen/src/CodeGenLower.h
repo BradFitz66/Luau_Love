@@ -344,6 +344,7 @@ inline bool lowerFunction(
 
         if (stats)
         {
+            
             constPropInstructionCount = getInstructionCount(ir.function.instructions, IrCmd::SUBSTITUTE);
             startTime = lua_clock();
         }
