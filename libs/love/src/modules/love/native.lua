@@ -185,12 +185,7 @@ local function wrapLoader(originalLoader, loaderIndex)
 				local func, err = loadstring(contents, "@" .. result)
 				if func then
 					-- Compile the entire chunk (and all nested local functions recursively)
-					local success, compileErr = native.compile(func)
-					if success then
-						print(string.format("[Native] ✓ Compiled module: %s", modulename))
-					else
-						print(string.format("[Native] ✗ Failed to compile %s: %s", modulename, compileErr or "unknown"))
-					end
+					native.compile(func)
 					-- Return the compiled function
 					return func
 				end
