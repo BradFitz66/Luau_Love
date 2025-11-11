@@ -37,6 +37,12 @@ extern "C" {
 	#include <lualib.h>
 	#include <luacode.h>
 }
+
+// Luau CodeGen glue functions
+extern "C" void love_luau_codegen_init(lua_State* L);
+extern "C" int love_luau_codegen_supported(lua_State* L);
+extern "C" int love_luau_codegen_compile(lua_State* L);
+
 #ifdef LOVE_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -184,20 +190,22 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 		return DONE_QUIT;
 	}
 
-	//ToDo: figure out why using these functions causes linker errors.
-
-	//bool codeGenSupported = Luau::CodeGen::isSupported();
 	// Create the virtual machine.
 	lua_State *L = luaL_newstate();
 	luaL_openlibs(L);
-	// if (!codeGenSupported)
-	// {
-	// 	printf("Warning: Luau code generation is not supported on this platform. Performance may be degraded.\n");
-	// }
-	// else
-	// {
-	// 	Luau::CodeGen::create(L);
-	// }
+	extern void luau_register_loadstring(lua_State* L);
+	luau_register_loadstring(L);
+
+	// Enable Luau native code generation via glue layer
+	love_luau_codegen_init(L);
+	
+	// Register the native compile functions for Lua code to call
+	lua_pushcfunction(L, love_luau_codegen_supported);
+	lua_setglobal(L, "_luau_native_supported");
+	
+	lua_pushcfunction(L, love_luau_codegen_compile);
+	lua_setglobal(L, "_luau_native_compile");
+
 	// LuaJIT-specific setup needs to be done as early as possible - before
 	// get_app_arguments because that loads external library code. This is also
 	// loaded inside love's Lua threads. Note that it doesn't use the love table.
@@ -242,6 +250,19 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 	lua_getglobal(L, "require");
 	lua_pushstring(L, "love");
 	lua_call(L, 1, 1); // leave the returned table on the stack.
+	
+	// Set up Luau native code generation module
+	{
+		love_preload(L, luaopen_love_native, "love.native");
+		lua_getglobal(L, "require");
+		lua_pushstring(L, "love.native");
+		lua_call(L, 1, 1);  // Returns the native module table
+		lua_setfield(L, -2, "native");  // love.native = module
+	}
+	
+	// Note: File loaders are registered during love.boot, not here
+	// So we'll wrap them later in the boot process
+	
 	// Add love._exe = true.
 	// This indicates that we're running the standalone version of love, and not
 	// the library version.

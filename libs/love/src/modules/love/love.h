@@ -37,6 +37,7 @@ LOVE_EXPORT const char *love_codename();
 LOVE_EXPORT int luaopen_love(lua_State *L);
 LOVE_EXPORT int luaopen_love_nogame(lua_State *L);
 LOVE_EXPORT int luaopen_love_jitsetup(lua_State *L);
+LOVE_EXPORT int luaopen_love_native(lua_State *L);
 LOVE_EXPORT int luaopen_love_arg(lua_State *L);
 LOVE_EXPORT int luaopen_love_callbacks(lua_State *L);
 LOVE_EXPORT int luaopen_love_boot(lua_State *L);

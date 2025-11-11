@@ -93,6 +93,10 @@ static const char jit_setup_lua[] =
 #include "jitsetup.lua"
 ;
 
+static const char native_lua[] =
+#include "native.lua"
+;
+
 // All modules define a c-accessible luaopen
 // so let's make use of those, instead
 // of addressing implementations directly.
@@ -160,6 +164,7 @@ extern "C"
 #endif
 	extern int luaopen_love_nogame(lua_State*);
 	extern int luaopen_love_jitsetup(lua_State*);
+	extern int luaopen_love_native(lua_State*);
 	extern int luaopen_love_arg(lua_State*);
 	extern int luaopen_love_callbacks(lua_State*);
 	extern int luaopen_love_boot(lua_State*);
@@ -804,6 +809,14 @@ int luaopen_love_jitsetup(lua_State *L)
 {
 	// if (love::luax_loadbufferx(L, jit_setup_lua, sizeof(jit_setup_lua), "=[love \"jitsetup.lua\"]") == 0)
 	// 	lua_call(L, 0, 1);
+
+	return 1;
+}
+
+int luaopen_love_native(lua_State *L)
+{
+	if (love::luax_loadbufferx(L, native_lua, sizeof(native_lua), "=[love \"native.lua\"]") == 0)
+		lua_call(L, 0, 1);
 
 	return 1;
 }
