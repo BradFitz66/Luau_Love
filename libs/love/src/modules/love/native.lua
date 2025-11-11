@@ -140,14 +140,9 @@ local function wrapLoader(originalLoader, loaderIndex)
 				end
 			end
 			
-			if shouldCompile then
-				local success, err = native.compile(result)
-				if success then
-					print(string.format("[Native] ✓ Compiled module: %s", modulename))
-				else
-					print(string.format("[Native] ✗ Failed to compile %s: %s", modulename, err or "unknown"))
-				end
-			end
+		if shouldCompile then
+			native.compile(result)
+		end
 			
 			return result
 		elseif type(result) == "string" then
