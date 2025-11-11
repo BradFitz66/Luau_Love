@@ -1823,6 +1823,15 @@ if(MSVC OR MINGW)
 endif()
 
 #
+# love_luau_glue (static library for CodeGen glue)
+#
+add_library(love_luau_glue STATIC src/luau_codegen_glue.cpp)
+target_include_directories(love_luau_glue PRIVATE
+	${LUAU_INCLUDE_DIRS}
+	${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+target_link_libraries(love_luau_glue Luau.VM)
+
 # love (executable)
 #
 if(ANDROID)
@@ -1836,7 +1845,7 @@ target_sources(love PRIVATE
 	src/love.cpp
 	src/luau_loadstring.cpp
 )
-target_link_libraries(love liblove)
+target_link_libraries(love liblove love_luau_glue Luau.CodeGen Luau.Compiler Luau.Ast Luau.VM)
 set_target_properties(love PROPERTIES
 	C_VISIBILITY_PRESET hidden
 	CXX_VISIBILITY_PRESET hidden
