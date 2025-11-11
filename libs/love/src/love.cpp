@@ -190,6 +190,8 @@ static DoneAction runlove(int argc, char **argv, int &retval, love::Variant &res
 	// Create the virtual machine.
 	lua_State *L = luaL_newstate();
 	luaL_openlibs(L);
+	extern void luau_register_loadstring(lua_State* L);
+	luau_register_loadstring(L);
 	// if (!codeGenSupported)
 	// {
 	// 	printf("Warning: Luau code generation is not supported on this platform. Performance may be degraded.\n");

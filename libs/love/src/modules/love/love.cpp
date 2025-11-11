@@ -617,7 +617,6 @@ int luaopen_love(lua_State *L)
 	lua_pushcfunction(L, w_love_getVersion,"");
 	lua_setfield(L, -2, "getVersion");
 
-	printf("Pushing loadstring\n");
 	lua_pushcfunction(L, w__loadstring);
 	lua_setfield(L, -2, "loadstring");
 

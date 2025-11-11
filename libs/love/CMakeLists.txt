@@ -1832,7 +1832,10 @@ else()
 	add_executable(love WIN32)
 endif()
 
-target_sources(love PRIVATE src/love.cpp)
+target_sources(love PRIVATE
+	src/love.cpp
+	src/luau_loadstring.cpp
+)
 target_link_libraries(love liblove)
 set_target_properties(love PROPERTIES
 	C_VISIBILITY_PRESET hidden
