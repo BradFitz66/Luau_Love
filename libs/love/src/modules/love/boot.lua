@@ -64,6 +64,11 @@ function love.boot()
 	if can_has_game then
 		love.arg.options.game.set = true
 	end
+	
+	-- Wrap any newly registered package loaders (file loaders) for native compilation
+	if love.native and love.native._wrapLoaders then
+		love.native._wrapLoaders()
+	end
 
 	-- Parse options now that we know which options we're looking for.
 	love.arg.parseOptions(love.rawGameArguments)
